@@ -22,7 +22,12 @@ jobs:
 
       - name: push image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/reaction
-
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
