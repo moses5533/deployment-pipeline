@@ -1,20 +1,16 @@
 name: Deploy to ECR and DOCKERHUB
 
 on:
- 
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  
   build:
-    
-    name: Build Image
+    name: Build and Push Image
     runs-on: ubuntu-latest
 
-   
     steps:
-    
       - name: Check out code
         uses: actions/checkout@v2
 
@@ -24,15 +20,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: build docker images
-        run : docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/reaction
+      - name: Build and tag Docker images
+        run: |
+          docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/reaction:latest
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/reaction:latest ${{ secrets.DOCKERHUB_USERNAME }}/reaction:${{ github.run_number }}
 
-      - name: push image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/reaction
+      - name: Push images to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/reaction:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/reaction:${{ github.run_number }}
 
-      - name: Check out code
-        uses: actions/checkout@v2
-      
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -51,4 +48,6 @@ jobs:
           IMAGE_TAG: latest
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.run_number }}
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.run_number }}
