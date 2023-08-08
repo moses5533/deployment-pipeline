@@ -27,8 +27,8 @@ jobs:
 
       - name: Push images to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/reaction:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/reaction:${{ github.run_number }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/reacting:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/reacting:${{ github.run_number }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
