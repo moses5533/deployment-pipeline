@@ -22,8 +22,8 @@ jobs:
 
       - name: Build and tag Docker images
         run: |
-          docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/reaction:latest
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/reaction:latest ${{ secrets.DOCKERHUB_USERNAME }}/reaction:${{ github.run_number }}
+          docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/reacting:latest
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/reaction:latest ${{ secrets.DOCKERHUB_USERNAME }}/reacting:${{ github.run_number }}
 
       - name: Push images to Docker Hub
         run: |
