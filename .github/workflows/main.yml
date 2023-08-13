@@ -1,4 +1,4 @@
-name: Deploy to ECR and DOCKER-HUB
+name: Deploy to ECR and Docker Hub
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  build:
-    name: Build and Push Image
+  build_and_push_dockerhub:
+    name: Build and Push to Docker Hub
     runs-on: ubuntu-latest
 
     steps:
@@ -35,6 +35,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - name: Check out code
+        uses: actions/checkout@v2
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
