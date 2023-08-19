@@ -24,7 +24,7 @@ jobs:
             exit 0
           fi
 
-      - name: Check out code
+      - name: Check out code now
         uses: actions/checkout@v2
 
       - name: Check out code
