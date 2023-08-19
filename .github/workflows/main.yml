@@ -13,7 +13,7 @@ jobs:
 
     steps:
 
-      - name: Check Time Window
+      - name: Check Time Window first
         id: check-time
         run: |
           current_hour=$(date +%H)
