@@ -1,7 +1,10 @@
+# on:
+#   push:
+#     branches:
+#       - main
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: "*/10 6-18 * * *"
 
 jobs:
   deploy_to_ecr:
@@ -9,6 +12,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - name: Check Time Window
+        id: check-time
+        run: |
+          current_hour=$(date +%H)
+          if [ $current_hour -ge 6 ] && [ $current_hour -lt 18 ]; then
+            echo "In time window. Proceeding..."
+          else
+            echo "Outside time window. Exiting..."
+            exit 0
+          fi
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
       - name: Check out code
         uses: actions/checkout@v2
 
